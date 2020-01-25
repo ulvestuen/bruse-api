@@ -1,0 +1,95 @@
+openapi: 3.0.0
+info:
+  title: Rebuslop API
+  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
+  version: 0.0.1
+servers:
+  - url: http://api.example.com/v1
+    description: Optional server description, e.g. Main (production) server
+  - url: http://staging-api.example.com
+    description: Optional server description, e.g. Internal staging server for testing
+paths:
+  /task:
+    get:
+      summary: Retrieves a task
+      operationId: getTask
+      tags:
+        - Rebuslop
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskRequestDto'
+      responses:
+        '200':
+          description: A photo has been taken
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskDto'
+        '500':
+          description: Something went wrong when trying to retrieve a task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+components:
+  schemas:
+    TaskRequestDto:
+      type: object
+      properties:
+        gamepin:
+          type: string
+        lat:
+          type: number
+          format: double
+        lon:
+          type: number
+          format: double
+    TaskDto:
+      type: object
+      properties:
+        task_id:
+          type: string
+        task_type:
+          type: string
+        latlon_coordinates:
+          type: array
+          maxLength: 2
+          minLength: 2
+          items:
+            type: number
+            format: double
+        acceptance_radius:
+          type: integer
+        task_content:
+          $ref: '#/components/schemas/TaskContentDto'
+    TaskContentDto:
+      type: object
+      properties:
+        body_type:
+          $ref: '#/components/schemas/TaskBodyTypeDto'
+        body:
+          type: string
+        images:
+          type: array
+          items:
+            type: string
+        videos:
+          type: array
+          items:
+            type: string
+        sounds:
+          type: array
+          items:
+            type: string
+    ErrorResponseDto:
+      type: object
+      properties:
+        error_message:
+          type: string
+    TaskBodyTypeDto:
+      type: string
+      enum:
+        - mustache
+        - markdown
