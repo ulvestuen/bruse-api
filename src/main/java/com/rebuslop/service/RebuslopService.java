@@ -3,36 +3,40 @@ package com.rebuslop.service;
 import com.rebuslop.model.Rebuslop;
 import com.rebuslop.model.Task;
 import com.rebuslop.model.TaskRequest;
+import com.rebuslop.repository.RebuslopRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class RebuslopService {
 
-    public Task getTask(final TaskRequest taskRequest) {
-        return null;
+    final RebuslopRepository rebuslopRepository;
+
+    @Autowired
+    public RebuslopService(final RebuslopRepository rebuslopRepository) {
+        this.rebuslopRepository = rebuslopRepository;
     }
 
     /**
-     * The method findIndexOfAvailableTask returns the index of the first task in the task list of the Rebuslop instance
+     * The method getTask returns the first task in the task list of the Rebuslop instance
      * as long as the lat, lon values provided are found to lie within the acceptance radius of a task. If not, the
-     * method
-     * returns -1.
+     * method returns an empty Optional<Task>.
      *
-     * @param rebuslop, active instance of type {@link Rebuslop}
-     * @param lat, latitude coordinate value of user measured in degrees.
-     * @param lon, longitude coordinate value of user measured in degrees.
+     * @param taskRequest, instance of type {@link TaskRequest}
+     * @return object of type {@link Task} wrapped in an Optional.
      */
-    private int findIndexOfAvailableTask(final Rebuslop rebuslop, final double lat, final double lon) {
-
-        return rebuslop.getTaskCoordinatesAndRadius().stream()
-                       .map(x -> calculateDistance(lat, lon, x[0], x[1]) < x[2])
-                       .collect(ArrayList<Boolean>::new, ArrayList::add, ArrayList::addAll)
-                       .indexOf(true);
-
+    public Optional<Task> getAvailableTask(final TaskRequest taskRequest) {
+        final Rebuslop rebuslop = rebuslopRepository.getRebuslop(taskRequest.getGamePin());
+        return rebuslop.getTasks().stream()
+                .filter(task -> calculateDistance(taskRequest.getLat(),
+                                                  taskRequest.getLon(),
+                                                  task.getLat(),
+                                                  task.getLon()) < task.getAcceptanceRadius())
+                .findFirst();
     }
-
 
     /**
      * The method calculateDistance returns the distance in meters between geographical points given by the pairs

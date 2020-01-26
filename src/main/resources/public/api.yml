@@ -9,8 +9,8 @@ servers:
   - url: http://staging-api.example.com
     description: Optional server description, e.g. Internal staging server for testing
 paths:
-  /task:
-    get:
+  /taskrequest:
+    post:
       summary: Retrieves a task
       operationId: getTask
       tags:

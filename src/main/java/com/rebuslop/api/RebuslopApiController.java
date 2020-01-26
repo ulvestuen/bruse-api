@@ -1,9 +1,6 @@
 package com.rebuslop.api;
 
-import com.rebuslop.model.Rebuslop;
-import com.rebuslop.model.TaskDto;
-import com.rebuslop.model.TaskRequest;
-import com.rebuslop.model.TaskRequestDto;
+import com.rebuslop.model.*;
 import com.rebuslop.service.RebuslopService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,12 +35,9 @@ public class RebuslopApiController implements RebuslopApi {
     }
 
     /**
-     * The method doPost overrides the same method in {@link HttpServlet}. This contains the code to be
-     * executed whenever a client sends a HTTP POST request to the server
+     * The method getTask serves as a controller for the endpoint handling incoming taskrequests.
      *
-     * @param request  reference to the HttpServletRequest object received.
-     * @param response reference to the HttpServletResponse object to be returned to client after server handling.
-     * @see HttpServlet
+     * @param taskRequestDto reference to the {@link TaskRequestDto} object received.
      */
     public ResponseEntity<TaskDto> getTask(@Valid @RequestBody final TaskRequestDto taskRequestDto) {
 
@@ -51,8 +45,9 @@ public class RebuslopApiController implements RebuslopApi {
                     taskRequestDto.getGamepin(),
                     taskRequestDto.getLat(),
                     taskRequestDto.getLat());
-        final var taskDto = rebuslopService.getTask(new TaskRequest(taskRequestDto)).convertToDto();
-        return ResponseEntity.ok(taskDto);
+        final var optionalTask = rebuslopService.getAvailableTask(new TaskRequest(taskRequestDto));
+        return optionalTask.map(task -> ResponseEntity.ok(task.convertToDto()))
+                           .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 
