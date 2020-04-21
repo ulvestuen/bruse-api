@@ -8,8 +8,8 @@
         <version>2.2.4.RELEASE</version>
         <relativePath/>
     </parent>
-    <groupId>com.rebuslop</groupId>
-    <artifactId>treasure-hunt-api</artifactId>
+    <groupId>dev.bruse</groupId>
+    <artifactId>bruse-api</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
@@ -128,8 +128,8 @@
                             <output>${project.build.directory}/generated-sources/openapi</output>
                             <generatorName>spring</generatorName>
                             <library>spring-boot</library>
-                            <apiPackage>com.rebuslop.api</apiPackage>
-                            <modelPackage>com.rebuslop.model</modelPackage>
+                            <apiPackage>dev.bruse.api</apiPackage>
+                            <modelPackage>dev.bruse.model</modelPackage>
                             <generateApis>true</generateApis>
                             <generateApiDocumentation>true</generateApiDocumentation>
                             <generateApiTests>false</generateApiTests>
@@ -142,7 +142,7 @@
                                 <java11>true</java11>
                                 <dateLibrary>java11</dateLibrary>
                                 <useTags>true</useTags>
-                                <configPackage>com.rebuslop.config</configPackage>
+                                <configPackage>dev.bruse.config</configPackage>
                                 <interfaceOnly>true</interfaceOnly>
                             </configOptions>
                         </configuration>

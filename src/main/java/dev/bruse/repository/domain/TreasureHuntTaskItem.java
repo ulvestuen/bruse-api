@@ -1,4 +1,4 @@
-package com.rebuslop.repository.domain;
+package dev.bruse.repository.domain;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;

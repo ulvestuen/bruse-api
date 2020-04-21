@@ -1,4 +1,4 @@
-package com.rebuslop.model;
+package dev.bruse.model;
 
 import java.util.List;
 

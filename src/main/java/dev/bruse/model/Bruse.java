@@ -1,16 +1,14 @@
-package com.rebuslop.model;
+package dev.bruse.model;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 
 /**
- * The Rebuslop class specifies contents and methods for a treasure hunt game. When initialized, it reads data from an
+ * The Bruse class specifies contents and methods for a treasure hunt game. When initialized, it reads data from an
  * external JSON-file and store the game information in its applicable fields. The class also provide methods for
- * accessing data from the Rebuslop instance.
+ * accessing data from the Bruse instance.
  */
-public class Rebuslop {
+public class Bruse {
 
     private final String huntId;
     private final List<Task> tasks;
@@ -19,7 +17,7 @@ public class Rebuslop {
     /**
      * Constructor
      */
-    private Rebuslop(final String gamePin, final List<Task> tasks) {
+    private Bruse(final String gamePin, final List<Task> tasks) {
         huntId = gamePin;
         this.tasks = tasks;
     }
@@ -51,8 +49,8 @@ public class Rebuslop {
             return this;
         }
 
-        public Rebuslop build() {
-            return new Rebuslop(gamePin, tasks);
+        public Bruse build() {
+            return new Bruse(gamePin, tasks);
         }
 
     }

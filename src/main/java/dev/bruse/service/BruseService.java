@@ -1,27 +1,26 @@
-package com.rebuslop.service;
+package dev.bruse.service;
 
-import com.rebuslop.model.Rebuslop;
-import com.rebuslop.model.Task;
-import com.rebuslop.model.TaskRequest;
-import com.rebuslop.repository.RebuslopRepository;
+import dev.bruse.model.Bruse;
+import dev.bruse.model.Task;
+import dev.bruse.model.TaskRequest;
+import dev.bruse.repository.BruseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
-public class RebuslopService {
+public class BruseService {
 
-    final RebuslopRepository rebuslopRepository;
+    final BruseRepository bruseRepository;
 
     @Autowired
-    public RebuslopService(final RebuslopRepository rebuslopRepository) {
-        this.rebuslopRepository = rebuslopRepository;
+    public BruseService(final BruseRepository bruseRepository) {
+        this.bruseRepository = bruseRepository;
     }
 
     /**
-     * The method getTask returns the first task in the task list of the Rebuslop instance
+     * The method getTask returns the first task in the task list of the Bruse instance
      * as long as the lat, lon values provided are found to lie within the acceptance radius of a task. If not, the
      * method returns an empty Optional<Task>.
      *
@@ -29,13 +28,13 @@ public class RebuslopService {
      * @return object of type {@link Task} wrapped in an Optional.
      */
     public Optional<Task> getAvailableTask(final TaskRequest taskRequest) {
-        final Rebuslop rebuslop = rebuslopRepository.getRebuslop(taskRequest.getGamePin());
-        return rebuslop.getTasks().stream()
-                .filter(task -> calculateDistance(taskRequest.getLat(),
+        final Bruse bruse = bruseRepository.getBruse(taskRequest.getGamePin());
+        return bruse.getTasks().stream()
+                    .filter(task -> calculateDistance(taskRequest.getLat(),
                                                   taskRequest.getLon(),
                                                   task.getLat(),
                                                   task.getLon()) < task.getAcceptanceRadius())
-                .findFirst();
+                    .findFirst();
     }
 
     /**

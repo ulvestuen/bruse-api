@@ -1,8 +1,8 @@
-package com.rebuslop.repository.domain;
+package dev.bruse.repository.domain;
 
-import com.rebuslop.model.Task;
-import com.rebuslop.model.TaskBodyType;
-import com.rebuslop.model.TaskContent;
+import dev.bruse.model.Task;
+import dev.bruse.model.TaskBodyType;
+import dev.bruse.model.TaskContent;
 
 public final class Db2ModelMapper {
 

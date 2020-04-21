@@ -1,4 +1,4 @@
-package com.rebuslop.config;
+package dev.bruse.config;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;

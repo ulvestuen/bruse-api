@@ -1,4 +1,4 @@
-package com.rebuslop.model;
+package dev.bruse.model;
 
 public enum TaskBodyType {
     MUSTACHE,

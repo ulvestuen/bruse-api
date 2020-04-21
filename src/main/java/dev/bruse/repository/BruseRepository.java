@@ -1,10 +1,10 @@
-package com.rebuslop.repository;
+package dev.bruse.repository;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.rebuslop.model.Rebuslop;
-import com.rebuslop.repository.domain.Db2ModelMapper;
-import com.rebuslop.repository.domain.TreasureHuntGameItem;
-import com.rebuslop.repository.domain.TreasureHuntTaskItem;
+import dev.bruse.model.Bruse;
+import dev.bruse.repository.domain.Db2ModelMapper;
+import dev.bruse.repository.domain.TreasureHuntGameItem;
+import dev.bruse.repository.domain.TreasureHuntTaskItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -12,18 +12,18 @@ import org.springframework.stereotype.Repository;
 import java.util.stream.Collectors;
 
 @Repository
-public class RebuslopRepository {
+public class BruseRepository {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RebuslopRepository.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BruseRepository.class);
 
     private final DynamoDBMapper dynamoDBMapper;
 
-    public RebuslopRepository(final DynamoDBMapper dynamoDBMapper) {
+    public BruseRepository(final DynamoDBMapper dynamoDBMapper) {
         this.dynamoDBMapper = dynamoDBMapper;
 
     }
 
-    public Rebuslop getRebuslop(final String gamePin) {
+    public Bruse getBruse(final String gamePin) {
         final var gameItem = dynamoDBMapper.load(TreasureHuntGameItem.class, gamePin);
         LOGGER.info("Request for game with gamePin {}, resulted in:\n{}", gamePin, gameItem);
         final var taskItems = gameItem.getTaskIds().stream()
@@ -33,7 +33,7 @@ public class RebuslopRepository {
                     gameItem.getTaskIds(),
                     taskItems);
 
-        return new Rebuslop.Builder(gamePin)
+        return new Bruse.Builder(gamePin)
                 .tasks(taskItems.stream()
                                 .map(Db2ModelMapper::dbTaskItem2Task)
                                 .collect(Collectors.toList()))

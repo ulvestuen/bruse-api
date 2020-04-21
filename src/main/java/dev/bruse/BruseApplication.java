@@ -1,13 +1,13 @@
-package com.rebuslop;
+package dev.bruse;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RebuslopApplication {
+public class BruseApplication {
 
     public static void main(final String[] args) {
-        SpringApplication.run(RebuslopApplication.class, args);
+        SpringApplication.run(BruseApplication.class, args);
     }
 
 }
