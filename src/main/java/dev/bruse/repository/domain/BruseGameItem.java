@@ -6,20 +6,20 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 import java.util.List;
 
-@DynamoDBTable(tableName = "treasure-hunt-games")
-public class TreasureHuntGameItem {
+@DynamoDBTable(tableName = "bruse-games")
+public class BruseGameItem {
 
-    private String huntId;
+    private String id;
     private List<String> taskIds;
 
 
-    @DynamoDBHashKey(attributeName = "hunt_id")
-    public String getHuntId() {
-        return huntId;
+    @DynamoDBHashKey(attributeName = "id")
+    public String getId() {
+        return id;
     }
 
-    public void setHuntId(final String huntId) {
-        this.huntId = huntId;
+    public void setId(final String id) {
+        this.id = id;
     }
 
     @DynamoDBAttribute(attributeName = "tasks")
@@ -33,8 +33,8 @@ public class TreasureHuntGameItem {
 
     @Override
     public String toString() {
-        return "TreasureHuntGameItem{" +
-                "huntId='" + huntId + '\'' +
+        return "BruseGameItem{" +
+                "id='" + id + '\'' +
                 ", taskIds=" + taskIds +
                 '}';
     }
