@@ -69,18 +69,6 @@ components:
           $ref: '#/components/schemas/TaskBodyTypeDto'
         body:
           type: string
-        images:
-          type: array
-          items:
-            type: string
-        videos:
-          type: array
-          items:
-            type: string
-        sounds:
-          type: array
-          items:
-            type: string
     ErrorResponseDto:
       type: object
       properties:
