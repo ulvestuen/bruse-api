@@ -77,5 +77,5 @@ components:
     TaskBodyTypeDto:
       type: string
       enum:
-        - mustache
-        - markdown
+        - html
+        - image
