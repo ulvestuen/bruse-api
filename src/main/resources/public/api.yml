@@ -20,11 +20,13 @@ paths:
               $ref: '#/components/schemas/TaskRequestDto'
       responses:
         '200':
-          description: A photo has been taken
+          description: A new task was found. This is returned to requester.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TaskDto'
+        '404':
+          description: No new task was found.
         '500':
           description: Something went wrong when trying to retrieve a task
           content:
