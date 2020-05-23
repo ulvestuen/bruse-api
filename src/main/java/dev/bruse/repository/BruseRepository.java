@@ -25,11 +25,11 @@ public class BruseRepository {
 
     public Bruse getBruse(final String gamePin) {
         final var gameItem = dynamoDBMapper.load(BruseGameItem.class, gamePin);
-        LOGGER.info("Request for game with gamePin {}, resulted in:\n{}", gamePin, gameItem);
+        LOGGER.debug("Request for game with gamePin {}, resulted in:\n{}", gamePin, gameItem);
         final var taskItems = gameItem.getTaskIds().stream()
                                       .map(taskId -> dynamoDBMapper.load(BruseTaskItem.class, taskId))
                                       .collect(Collectors.toList());
-        LOGGER.info("Request for tasks with taskIds {}, resulted in:\n{}",
+        LOGGER.debug("Request for tasks with taskIds {}, resulted in:\n{}",
                     gameItem.getTaskIds(),
                     taskItems);
 

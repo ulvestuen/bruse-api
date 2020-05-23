@@ -4,6 +4,8 @@ import dev.bruse.model.Bruse;
 import dev.bruse.model.Task;
 import dev.bruse.model.TaskRequest;
 import dev.bruse.repository.BruseRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,8 @@ import java.util.Optional;
 
 @Service
 public class BruseService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BruseService.class);
 
     final BruseRepository bruseRepository;
 
@@ -29,12 +33,15 @@ public class BruseService {
      */
     public Optional<Task> getAvailableTask(final TaskRequest taskRequest) {
         final Bruse bruse = bruseRepository.getBruse(taskRequest.getGamePin());
-        return bruse.getTasks().stream()
-                    .filter(task -> calculateDistance(taskRequest.getLat(),
-                                                  taskRequest.getLon(),
-                                                  task.getLat(),
-                                                  task.getLon()) < task.getAcceptanceRadius())
-                    .findFirst();
+        final var optionalBruseTask = bruse.getTasks().stream()
+                                           .filter(task -> calculateDistance(taskRequest.getLat(),
+                                                                             taskRequest.getLon(),
+                                                                             task.getLat(),
+                                                                             task.getLon()) < task.getAcceptanceRadius())
+                                           .findFirst();
+        optionalBruseTask.ifPresentOrElse(el -> LOGGER.info("Task found with id {}", el.getTaskId()),
+                                          () -> LOGGER.info("No task found"));
+        return optionalBruseTask;
     }
 
     /**

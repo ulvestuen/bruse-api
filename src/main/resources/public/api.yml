@@ -7,10 +7,10 @@ servers:
   - url: https://api.bruse.dev/
     description: Main (production) server
 paths:
-  /taskrequest:
+  /task/request:
     post:
-      summary: Retrieves a task
-      operationId: getTask
+      summary: Requests a task
+      operationId: requestTask
       tags:
         - Bruse
       requestBody:
@@ -33,6 +33,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponseDto'
+  /task/content/{contentId}:
+    get:
+      summary: Get task content
+      operationId: getTaskContent
+      parameters:
+        - name: contentId
+          in: path
+          schema:
+            type: string
+      tags:
+        - Bruse
+      responses:
+        '200':
+          description: Returns the requested task content.
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+            text/html:
+              schema:
+                type: string
+        '308':
+          description: Returns redirect information to the given task content.
 components:
   schemas:
     TaskRequestDto:
@@ -51,8 +75,6 @@ components:
       properties:
         task_id:
           type: string
-        task_type:
-          type: string
         latlon_coordinates:
           type: array
           maxLength: 2
@@ -62,22 +84,10 @@ components:
             format: double
         acceptance_radius:
           type: integer
-        task_content:
-          $ref: '#/components/schemas/TaskContentDto'
-    TaskContentDto:
-      type: object
-      properties:
-        body_type:
-          $ref: '#/components/schemas/TaskBodyTypeDto'
-        body:
+        task_content_id:
           type: string
     ErrorResponseDto:
       type: object
       properties:
         error_message:
           type: string
-    TaskBodyTypeDto:
-      type: string
-      enum:
-        - html
-        - image

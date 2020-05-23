@@ -6,26 +6,23 @@ public class Task {
 
     private final String taskId;
     private final String taskDesc;
-    private final String taskType;
     private final double lat;
     private final double lon;
     private final int acceptanceRadius;
-    private final TaskContent taskContent;
+    private final String taskContentId;
 
     private Task(final String taskId,
                  final String taskDesc,
-                 final String taskType,
                  final double lat,
                  final double lon,
                  final int acceptanceRadius,
-                 final TaskContent taskContent) {
+                 final String taskContentId) {
         this.taskId = taskId;
         this.taskDesc = taskDesc;
-        this.taskType = taskType;
         this.lat = lat;
         this.lon = lon;
         this.acceptanceRadius = acceptanceRadius;
-        this.taskContent = taskContent;
+        this.taskContentId = taskContentId;
     }
 
     public String getTaskId() {
@@ -34,10 +31,6 @@ public class Task {
 
     public String getTaskDesc() {
         return taskDesc;
-    }
-
-    public String getTaskType() {
-        return taskType;
     }
 
     public double getLat() {
@@ -52,26 +45,24 @@ public class Task {
         return acceptanceRadius;
     }
 
-    public TaskContent getTaskContent() {
-        return taskContent;
+    public String getTaskContentId() {
+        return taskContentId;
     }
 
     public TaskDto convertToDto() {
         return new TaskDto().taskId(taskId)
-                            .taskType(taskType)
                             .latlonCoordinates(List.of(lat, lon))
                             .acceptanceRadius(acceptanceRadius)
-                            .taskContent(taskContent.convertToDto());
+                            .taskContentId(taskContentId);
     }
 
     public static class Builder {
         private final String taskId;
         private String taskDesc;
-        private String taskType;
         private double lat;
         private double lon;
         private int acceptanceRadius;
-        private TaskContent taskContent;
+        private String taskContentId;
 
         public Builder(final String taskId) {
             this.taskId = taskId;
@@ -79,11 +70,6 @@ public class Task {
 
         public Builder taskDesc(final String taskDesc) {
             this.taskDesc = taskDesc;
-            return this;
-        }
-
-        public Builder taskType(final String taskType) {
-            this.taskType = taskType;
             return this;
         }
 
@@ -102,19 +88,18 @@ public class Task {
             return this;
         }
 
-        public Builder taskContent(final TaskContent taskContent) {
-            this.taskContent = taskContent;
+        public Builder taskContentId(final String taskContentId) {
+            this.taskContentId = taskContentId;
             return this;
         }
 
         public Task build() {
             return new Task(taskId,
                             taskDesc,
-                            taskType,
                             lat,
                             lon,
                             acceptanceRadius,
-                            taskContent);
+                            taskContentId);
         }
     }
 }

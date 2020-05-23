@@ -1,7 +1,6 @@
 package dev.bruse.repository.domain;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
@@ -10,11 +9,10 @@ public class BruseTaskItem {
 
     private String id;
     private String taskDesc;
-    private String taskType;
     private double lat;
     private double lon;
     private int acceptanceRadius;
-    private TaskContent taskContent;
+    private String taskContentId;
 
     @DynamoDBHashKey(attributeName = "id")
     public String getId() {
@@ -32,15 +30,6 @@ public class BruseTaskItem {
 
     public void setTaskDesc(final String taskDesc) {
         this.taskDesc = taskDesc;
-    }
-
-    @DynamoDBAttribute(attributeName = "task_type")
-    public String getTaskType() {
-        return taskType;
-    }
-
-    public void setTaskType(final String taskType) {
-        this.taskType = taskType;
     }
 
     @DynamoDBAttribute(attributeName = "lat")
@@ -70,13 +59,13 @@ public class BruseTaskItem {
         this.acceptanceRadius = acceptanceRadius;
     }
 
-    @DynamoDBAttribute(attributeName = "task_content")
-    public TaskContent getTaskContent() {
-        return taskContent;
+    @DynamoDBAttribute(attributeName = "task_content_id")
+    public String getTaskContentId() {
+        return taskContentId;
     }
 
-    public void setTaskContent(final TaskContent taskContent) {
-        this.taskContent = taskContent;
+    public void setTaskContentId(final String taskContentId) {
+        this.taskContentId = taskContentId;
     }
 
     @Override
@@ -84,44 +73,10 @@ public class BruseTaskItem {
         return "BruseTaskItem{" +
                 "taskId='" + id + '\'' +
                 ", taskDesc='" + taskDesc + '\'' +
-                ", taskType='" + taskType + '\'' +
                 ", lat=" + lat +
                 ", lon=" + lon +
                 ", acceptanceRadius=" + acceptanceRadius +
-                ", taskContent=" + taskContent +
+                ", taskContentId=" + taskContentId +
                 '}';
-    }
-
-    @DynamoDBDocument
-    public static class TaskContent {
-
-        private String taskBodyType;
-        private String body;
-
-        @DynamoDBAttribute(attributeName = "task_body_type")
-        public String getTaskBodyType() {
-            return taskBodyType;
-        }
-
-        public void setTaskBodyType(final String taskBodyType) {
-            this.taskBodyType = taskBodyType;
-        }
-
-        @DynamoDBAttribute(attributeName = "body")
-        public String getBody() {
-            return body;
-        }
-
-        public void setBody(final String body) {
-            this.body = body;
-        }
-
-        @Override
-        public String toString() {
-            return "TaskContent{" +
-                    "taskBodyType='" + taskBodyType + '\'' +
-                    ", body='" + body + '\'' +
-                    '}';
-        }
     }
 }
