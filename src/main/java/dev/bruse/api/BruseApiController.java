@@ -24,6 +24,7 @@ import javax.validation.Valid;
  * @see HttpServlet
  */
 @RestController
+@CrossOrigin
 public class BruseApiController implements BruseApi {
     private final Logger LOGGER = LoggerFactory.getLogger(BruseApiController.class);
     private static final long serialVersionUID = 1L;
