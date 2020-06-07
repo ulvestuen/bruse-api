@@ -45,7 +45,9 @@ public class BruseApiController implements BruseApi {
      * @param taskRequestDto reference to the {@link TaskRequestDto} object received.
      */
     public ResponseEntity<TaskDto> requestTask(@Valid @RequestBody final TaskRequestDto taskRequestDto) {
-
+        if (!TaskRequestDtoValidator.isValid(taskRequestDto)) {
+            return ResponseEntity.badRequest().build();
+        }
         LOGGER.info("Task request received for game pin {} and coordinates lat {} lon {}",
                     taskRequestDto.getGamepin(),
                     taskRequestDto.getLat(),
@@ -54,6 +56,7 @@ public class BruseApiController implements BruseApi {
         return optionalTask.map(task -> ResponseEntity.ok(task.convertToDto()))
                            .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     /**
      * The method getTaskContent serves as a controller for the endpoint handling incoming requests for
      * task content.
