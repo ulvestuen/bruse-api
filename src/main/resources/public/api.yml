@@ -25,10 +25,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TaskDto'
+        '400':
+          description: The provided request body was not accepted.
         '404':
           description: No new task was found.
         '500':
-          description: Something went wrong when trying to retrieve a task
+          description: Something went wrong when trying to retrieve a task.
           content:
             application/json:
               schema:
@@ -42,6 +44,7 @@ paths:
           in: path
           schema:
             type: string
+          required: true
       tags:
         - Bruse
       responses:
@@ -57,6 +60,8 @@ paths:
                 type: string
         '308':
           description: Returns redirect information to the given task content.
+        '400':
+          description: The provided content id was not accepted.
 components:
   schemas:
     TaskRequestDto:
@@ -70,6 +75,10 @@ components:
         lon:
           type: number
           format: double
+      required:
+        - gamepin
+        - lat
+        - lon
     TaskDto:
       type: object
       properties:

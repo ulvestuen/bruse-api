@@ -64,6 +64,9 @@ public class BruseApiController implements BruseApi {
      * @param contentId reference to the task content id received.
      */
     public ResponseEntity<Resource> getTaskContent(@PathVariable("contentId") final String contentId) {
+        if (!TaskContentIdValidator.isValid(contentId)) {
+            return ResponseEntity.badRequest().build();
+        }
         LOGGER.info("Task content requested with contentId " + contentId);
         return ResponseEntity.status(HttpStatus.PERMANENT_REDIRECT)
                              .header(HttpHeaders.LOCATION,
