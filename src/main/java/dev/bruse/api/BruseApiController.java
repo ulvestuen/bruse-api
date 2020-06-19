@@ -74,6 +74,23 @@ public class BruseApiController implements BruseApi {
                              .build();
     }
 
+    /**
+     * The method getTaskContentHead serves as a controller for the endpoint handling incoming requests for
+     * task content.
+     *
+     * @param contentId reference to the task content id received.
+     */
+    public ResponseEntity<Resource> getTaskContentHead(@PathVariable("contentId") final String contentId) {
+        if (!TaskContentIdValidator.isValid(contentId)) {
+            return ResponseEntity.badRequest().build();
+        }
+        LOGGER.info("Task content information requested with contentId " + contentId);
+        return ResponseEntity.status(HttpStatus.PERMANENT_REDIRECT)
+                             .header(HttpHeaders.LOCATION,
+                                     taskContentUrlBasePath + contentId)
+                             .build();
+    }
+
 }
 
 

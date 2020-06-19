@@ -62,6 +62,32 @@ paths:
           description: Returns redirect information to the given task content.
         '400':
           description: The provided content id was not accepted.
+    head:
+      summary: Get task content information
+      operationId: getTaskContentHead
+      parameters:
+        - name: contentId
+          in: path
+          schema:
+            type: string
+          required: true
+      tags:
+        - Bruse
+      responses:
+        '200':
+          description: Returns the requested task content information
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+            text/html:
+              schema:
+                type: string
+        '308':
+          description: Returns redirect information to the given task content information.
+        '400':
+          description: The provided content id was not accepted.
 components:
   schemas:
     TaskRequestDto:
