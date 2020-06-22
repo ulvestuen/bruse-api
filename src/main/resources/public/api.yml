@@ -35,36 +35,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponseDto'
-  /task/content/{contentId}:
+  /task/content/info/{contentId}:
     get:
-      summary: Get task content
-      operationId: getTaskContent
-      parameters:
-        - name: contentId
-          in: path
-          schema:
-            type: string
-          required: true
-      tags:
-        - Bruse
-      responses:
-        '200':
-          description: Returns the requested task content.
-          content:
-            image/*:
-              schema:
-                type: string
-                format: binary
-            text/html:
-              schema:
-                type: string
-        '308':
-          description: Returns redirect information to the given task content.
-        '400':
-          description: The provided content id was not accepted.
-    head:
       summary: Get task content information
-      operationId: getTaskContentHead
+      operationId: getTaskContentInfo
       parameters:
         - name: contentId
           in: path
@@ -77,17 +51,13 @@ paths:
         '200':
           description: Returns the requested task content information
           content:
-            image/*:
+            application/json:
               schema:
-                type: string
-                format: binary
-            text/html:
-              schema:
-                type: string
-        '308':
-          description: Returns redirect information to the given task content information.
+                $ref: '#/components/schemas/TaskContentInfoDto'
         '400':
           description: The provided content id was not accepted.
+        '404':
+          description: No task content information was found.
 components:
   schemas:
     TaskRequestDto:
@@ -120,6 +90,15 @@ components:
         acceptance_radius:
           type: integer
         task_content_id:
+          type: string
+    TaskContentInfoDto:
+      type: object
+      properties:
+        task_content_id:
+          type: string
+        task_content_url:
+          type: string
+        task_content_type:
           type: string
     ErrorResponseDto:
       type: object

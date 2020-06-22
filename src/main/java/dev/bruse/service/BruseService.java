@@ -2,13 +2,20 @@ package dev.bruse.service;
 
 import dev.bruse.model.Bruse;
 import dev.bruse.model.Task;
+import dev.bruse.model.TaskContentInfo;
 import dev.bruse.model.TaskRequest;
 import dev.bruse.repository.BruseRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Optional;
 
 @Service
@@ -16,11 +23,17 @@ public class BruseService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BruseService.class);
 
-    final BruseRepository bruseRepository;
+    private final BruseRepository bruseRepository;
+    private final String taskContentUrlBasePath;
+    private final HttpClient httpClient;
+
 
     @Autowired
-    public BruseService(final BruseRepository bruseRepository) {
+    public BruseService(final BruseRepository bruseRepository,
+                        @Value("${task.content.basepath}") final String taskContentUrlBasePath) {
         this.bruseRepository = bruseRepository;
+        this.taskContentUrlBasePath = taskContentUrlBasePath;
+        this.httpClient = HttpClient.newHttpClient();
     }
 
     /**
@@ -42,6 +55,37 @@ public class BruseService {
         optionalBruseTask.ifPresentOrElse(el -> LOGGER.info("Task found with id {}", el.getTaskId()),
                                           () -> LOGGER.info("No task found"));
         return optionalBruseTask;
+    }
+
+    /**
+     * The method getTaskContentinfo returns information about the URL to fetch the task content given a
+     * taskContentId, together with information about task content type.
+     *
+     * @param taskContentId, task content id of type {@link String}
+     * @return object of type {@link TaskContentInfo} wrapped in an Optional.
+     */
+    public Optional<TaskContentInfo> getTaskContentInfo(final String taskContentId) {
+        final var taskContentInfoRequest = HttpRequest.newBuilder()
+                                                      .uri(URI.create(taskContentUrlBasePath + taskContentId))
+                                                      .method("HEAD", HttpRequest.BodyPublishers.noBody())
+                                                      .build();
+        try {
+            final var response = httpClient.send(taskContentInfoRequest,
+                                                 HttpResponse.BodyHandlers.discarding());
+            if (response.statusCode() != HttpStatus.OK.value()) {
+                LOGGER.warn("Unexpected response code when fetching task content information: {}",
+                            response.statusCode());
+                return Optional.empty();
+            }
+
+            return Optional.of(new TaskContentInfo(taskContentId,
+                                                   taskContentUrlBasePath + taskContentId,
+                                                   response.headers()
+                                                           .firstValue("Content-Type").orElseThrow()));
+        } catch (final Exception e) {
+            LOGGER.warn("Error occurred when fetching task content information.", e);
+            return Optional.empty();
+        }
     }
 
     /**

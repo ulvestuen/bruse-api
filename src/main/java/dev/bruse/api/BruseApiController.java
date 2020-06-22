@@ -1,5 +1,6 @@
 package dev.bruse.api;
 
+import dev.bruse.model.TaskContentInfoDto;
 import dev.bruse.model.TaskDto;
 import dev.bruse.model.TaskRequest;
 import dev.bruse.model.TaskRequestDto;
@@ -7,12 +8,11 @@ import dev.bruse.service.BruseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServlet;
 import javax.validation.Valid;
@@ -28,15 +28,12 @@ import javax.validation.Valid;
 public class BruseApiController implements BruseApi {
     private final Logger LOGGER = LoggerFactory.getLogger(BruseApiController.class);
     private static final long serialVersionUID = 1L;
-    private final String taskContentUrlBasePath;
 
     private final BruseService bruseService;
 
     @Autowired
-    public BruseApiController(final BruseService bruseService,
-                              @Value("${task.content.basepath}") final String taskContentUrlBasePath) {
+    public BruseApiController(final BruseService bruseService) {
         this.bruseService = bruseService;
-        this.taskContentUrlBasePath = taskContentUrlBasePath;
     }
 
     /**
@@ -58,39 +55,25 @@ public class BruseApiController implements BruseApi {
     }
 
     /**
-     * The method getTaskContent serves as a controller for the endpoint handling incoming requests for
-     * task content.
+     * The method getTaskContentInfo serves as a controller for the endpoint handling incoming requests for
+     * task content information.
      *
      * @param contentId reference to the task content id received.
      */
-    public ResponseEntity<Resource> getTaskContent(@PathVariable("contentId") final String contentId) {
-        if (!TaskContentIdValidator.isValid(contentId)) {
-            return ResponseEntity.badRequest().build();
-        }
-        LOGGER.info("Task content requested with contentId " + contentId);
-        return ResponseEntity.status(HttpStatus.PERMANENT_REDIRECT)
-                             .header(HttpHeaders.LOCATION,
-                                     taskContentUrlBasePath + contentId)
-                             .build();
-    }
-
-    /**
-     * The method getTaskContentHead serves as a controller for the endpoint handling incoming requests for
-     * task content.
-     *
-     * @param contentId reference to the task content id received.
-     */
-    public ResponseEntity<Resource> getTaskContentHead(@PathVariable("contentId") final String contentId) {
+    public ResponseEntity<TaskContentInfoDto> getTaskContentInfo(@PathVariable("contentId") final String contentId) {
         if (!TaskContentIdValidator.isValid(contentId)) {
             return ResponseEntity.badRequest().build();
         }
         LOGGER.info("Task content information requested with contentId " + contentId);
-        return ResponseEntity.status(HttpStatus.PERMANENT_REDIRECT)
-                             .header(HttpHeaders.LOCATION,
-                                     taskContentUrlBasePath + contentId)
-                             .build();
-    }
+        final var optionalTaskContentInfo = bruseService.getTaskContentInfo(contentId);
 
+        return optionalTaskContentInfo.map(
+                taskContentInfo -> ResponseEntity.ok(new TaskContentInfoDto()
+                                                             .taskContentId(taskContentInfo.getTaskContentId())
+                                                             .taskContentUrl(taskContentInfo.getTaskContentUrl())
+                                                             .taskContentType(taskContentInfo.getTaskContentType())))
+                                      .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }
 
 
