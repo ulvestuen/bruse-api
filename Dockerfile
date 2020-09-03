@@ -29,7 +29,7 @@
 # When docker image is built from this file, a version of openapi-generator-maven-plugin is used in the build process. This tool
 # is available under a "Apache License 2.0" license. For details, see https://github.com/OpenAPITools/openapi-generator/blob/master/LICENSE
 
-FROM maven:latest as builder
+FROM maven:3.6.3-openjdk-11-slim as builder
 RUN groupadd -g 999 bruse-api && \
     useradd -r -u 999 -g bruse-api bruse-api
 
