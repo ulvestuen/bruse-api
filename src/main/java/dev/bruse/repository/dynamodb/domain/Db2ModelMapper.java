@@ -1,4 +1,4 @@
-package dev.bruse.repository.domain;
+package dev.bruse.repository.dynamodb.domain;
 
 import dev.bruse.model.Task;
 

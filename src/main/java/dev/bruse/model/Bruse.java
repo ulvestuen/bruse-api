@@ -4,9 +4,8 @@ import java.util.List;
 
 
 /**
- * The Bruse class specifies contents and methods for a bruse game. When initialized, it reads data from an
- * external JSON-file and store the game information in its applicable fields. The class also provide methods for
- * accessing data from the Bruse instance.
+ * The Bruse class specifies contents provide methods for accessing data
+ * from the Bruse instance.
  */
 public class Bruse {
 
@@ -20,6 +19,13 @@ public class Bruse {
     private Bruse(final String gamePin, final List<Task> tasks) {
         id = gamePin;
         this.tasks = tasks;
+    }
+
+    /**
+     * Get id.
+     */
+    public String getId() {
+        return id;
     }
 
     /**

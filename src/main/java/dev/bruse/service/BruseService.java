@@ -4,7 +4,7 @@ import dev.bruse.model.Bruse;
 import dev.bruse.model.Task;
 import dev.bruse.model.TaskContentInfo;
 import dev.bruse.model.TaskRequest;
-import dev.bruse.repository.BruseRepository;
+import dev.bruse.repository.dynamodb.DynamoDbRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +23,13 @@ public class BruseService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BruseService.class);
 
-    private final BruseRepository bruseRepository;
+    private final DynamoDbRepository bruseRepository;
     private final String taskContentUrlBasePath;
     private final HttpClient httpClient;
 
 
     @Autowired
-    public BruseService(final BruseRepository bruseRepository,
+    public BruseService(final DynamoDbRepository bruseRepository,
                         @Value("${task.content.basepath}") final String taskContentUrlBasePath) {
         this.bruseRepository = bruseRepository;
         this.taskContentUrlBasePath = taskContentUrlBasePath;

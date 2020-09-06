@@ -22,7 +22,7 @@ class TaskContentIdValidatorTest {
     }
 
     @Test
-    void isValid_notAllowedContentId_returnsFalse() {
+    void isValid_illegalContentId_returnsFalse() {
 
         assertTrue(List.of("abc",
                            "",
