@@ -49,7 +49,7 @@ public class BruseApiController implements BruseApi {
                     taskRequestDto.getGamepin(),
                     taskRequestDto.getLat(),
                     taskRequestDto.getLon());
-        final var optionalTask = bruseService.getAvailableTask(new TaskRequest(taskRequestDto));
+        final var optionalTask = bruseService.getAvailableTask(TaskRequest.fromDto(taskRequestDto));
         return optionalTask.map(task -> ResponseEntity.ok(task.convertToDto()))
                            .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -67,11 +67,13 @@ public class BruseApiController implements BruseApi {
         LOGGER.info("Task content information requested with contentId " + contentId);
         final var optionalTaskContentInfo = bruseService.getTaskContentInfo(contentId);
 
-        return optionalTaskContentInfo.map(
-                taskContentInfo -> ResponseEntity.ok(new TaskContentInfoDto()
-                                                             .taskContentId(taskContentInfo.getTaskContentId())
-                                                             .taskContentUrl(taskContentInfo.getTaskContentUrl())
-                                                             .taskContentType(taskContentInfo.getTaskContentType())))
+        return optionalTaskContentInfo.map(taskContentInfo -> ResponseEntity.ok(
+                                                   new TaskContentInfoDto()
+                                                           .taskContentId(taskContentInfo.getTaskContentId())
+                                                           .taskContentUrl(taskContentInfo.getTaskContentUrl())
+                                                           .taskContentType(taskContentInfo.getTaskContentType())
+                                           )
+                                      )
                                       .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

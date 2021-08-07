@@ -15,10 +15,11 @@ public class TaskContentInfo {
         this.taskContentType = taskContentType;
     }
 
-    public TaskContentInfo(final TaskContentInfoDto taskContentInfoDto) {
-        taskContentId = taskContentInfoDto.getTaskContentId();
-        taskContentUrl = taskContentInfoDto.getTaskContentUrl();
-        taskContentType = taskContentInfoDto.getTaskContentType();
+    public static TaskContentInfo fromDto(final TaskContentInfoDto taskContentInfoDto) {
+        return new TaskContentInfo(taskContentInfoDto.getTaskContentId(),
+                                   taskContentInfoDto.getTaskContentUrl(),
+                                   taskContentInfoDto.getTaskContentType());
+
     }
 
     public String getTaskContentId() {

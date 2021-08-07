@@ -12,10 +12,11 @@ public class TaskRequest {
         this.lon = lon;
     }
 
-    public TaskRequest(final TaskRequestDto taskRequestDto) {
-        gamePin = taskRequestDto.getGamepin();
-        lat = taskRequestDto.getLat();
-        lon = taskRequestDto.getLon();
+    public static TaskRequest fromDto(final TaskRequestDto taskRequestDto) {
+        return new TaskRequest(taskRequestDto.getGamepin(),
+                               taskRequestDto.getLat(),
+                               taskRequestDto.getLon());
+
     }
 
     public String getGamePin() {

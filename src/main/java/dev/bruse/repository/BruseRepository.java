@@ -4,6 +4,6 @@ import dev.bruse.model.Bruse;
 
 public interface BruseRepository {
 
-    public Bruse getBruse(final String gamePin);
+    Bruse getBruse(final String gamePin);
 
 }
